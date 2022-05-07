@@ -6,7 +6,9 @@ const create = async (newLogin) => {
   };
 
 const getAll = async () => {
-    const data = await Models.LoginHistory.findAll();
+    const data = await Models.LoginHistory.findAll({
+      include: [{association: "User"}]
+    });
     return data;
   };
 

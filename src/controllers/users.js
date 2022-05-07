@@ -5,7 +5,9 @@ const register = async (req, res, next) => {
   
   try {
     const data = await usersService.create(req.body);
-    res.status(201).json({ msg: `User created succesfully`, data });
+    res.status(201).json({
+       msg: `User created succesfully`,
+       acces_token :  data });
   } catch (error) {
     next(error);
   }
@@ -13,17 +15,19 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const user = await usersService.login(req.body,res);
-        if (user){
+        const accessToken = await usersService.login(req.body,res);
+        user = accessToken.user
+        token = accessToken.token
+        if (accessToken){
           loginHistoryService.create({
             fechaHora: new Date(),
             Tipo: 'tipo1',
             usuarios_id: user.id
           })
-
-            res.status(200).json(user);
-        } else {
-            res.status(401).json({ok: false});
+          res.status(200).json({token: token });
+        }
+         else {
+          res.status(401).json({ ok: false });
         }
     } catch (e) {
         next(e);

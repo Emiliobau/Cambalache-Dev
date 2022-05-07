@@ -1,9 +1,12 @@
 const usersRepository = require("../repositories/users");
 const bcrypt = require("bcryptjs");
+const { generateToken } = require("../modules/auth")
 
 const create = async (user) => {
   user.password = bcrypt.hashSync(user.password, 10);
-  return await usersRepository.create(user);
+  const data =  await usersRepository.create(user);
+  return generateToken({ id: data.id })
+  
 };
 
 const invalidUserMsg = "email or password is invalid.";
@@ -26,7 +29,13 @@ const login = async (body,res) => {
             }
     })
     };
-    return user;
+    token =generateToken({ id: user.id })
+    console.log(user)
+    return{user,token}  
+   
+      
+    
+    
 };
 
 const getAll = async () => {

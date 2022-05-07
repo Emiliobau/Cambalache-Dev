@@ -32,6 +32,16 @@ module.exports = (sequelize, DataTypes) =>{
     }
   
     const Repository = sequelize.define(alias, cols, config)
+
+    Repository.associate = function(modelos) {
+
+      Repository.belongsTo(modelos.User,{
+        as: "User",
+        foreignKey: "usuarios_id"
+
+      })
+
+    }
   
     return Repository
   }

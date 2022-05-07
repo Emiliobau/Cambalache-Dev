@@ -6,7 +6,9 @@ const create = async (repository) => {
   };
 
 const getAll = async () => {
-    const data = await Models.Repository.findAll();
+    const data = await Models.Repository.findAll({
+      include: [{association: "User"}]
+    });
     return data;
   };
 

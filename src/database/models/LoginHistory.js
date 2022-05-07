@@ -26,6 +26,16 @@ module.exports = (sequelize, DataTypes) =>{
     }
   
     const LoginHistory = sequelize.define(alias, cols, config)
+
+    LoginHistory.associate = function(modelos) {
+
+      LoginHistory.belongsTo(modelos.User,{
+        as: "User",
+        foreignKey: "usuarios_id"
+
+      })
+
+    }
   
     return LoginHistory
   }
