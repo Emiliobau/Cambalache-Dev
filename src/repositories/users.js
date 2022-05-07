@@ -1,24 +1,21 @@
 const Models = require("../database/models")
 
-// const getAll = async () => {
-//   const data = await Models.Users.findAll({
-//     attributes: ['firstName', 'email', 'image'],
-//   });
-//   return data;
-// };
+
 
 const create = async (user) => {
+  console.log(user)
   return await Models.User.create(user);
 };
 
-// const getById = async (id) => {
-//   const user = await Models.Users.findByPk(id, {
-//     attributes: {
-//       exclude: ['password'],
-//     },
-//   });
-//   return user;
-// };
+const getAll = async () => {
+  const data = await Models.User.findAll();
+  return data;
+};
+
+const getById = async (id) => {
+  const user = await Models.User.findByPk(id);
+  return user;
+};
 
 const findByEmail = async (userEmail) => {
   const data = await Models.User.findOne({
@@ -28,28 +25,20 @@ const findByEmail = async (userEmail) => {
   return data;
 };
 
-// const remove = async (id) => {
-//   await Models.Users.destroy({ where: { id: id } });
-//   return true;
-// };
+const update = async (id, data) => {
+  return await Models.User.update(data, { where: { id : id } });
+};
 
-// const update = async (id, changes) => {
-//   const userUpdate = await Models.Users.update(
-//     { firstName: changes.firstName, lastName: changes.lastName },
-//     {
-//       where: {
-//         id: id,
-//       },
-//     }
-//   );
-//   return userUpdate;
-// };
+const remove = async (id) => {
+  await Models.User.destroy({ where: { id: id } });
+};
+
 
 module.exports = {
-//   getAll,
-//   getById,
+  getAll,
+  getById,
   findByEmail,
   create,
-//   remove,
-//   update,
+  remove,
+  update,
 };

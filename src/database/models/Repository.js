@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) =>{
         values: ["java", "javascript", "python"]
       },
       fechaCreacion:{
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
       },
       descripcion:{
