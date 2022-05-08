@@ -15,6 +15,7 @@ const login = async (body,res) => {
     const user = await usersRepository.findByEmail(body.email);
     if (!user) {
         return res.status(401).json({
+            status : 401,
             data : {
               msg : invalidUserMsg
             }
@@ -24,13 +25,13 @@ const login = async (body,res) => {
     if (!bcrypt.compareSync(body.password, user.password)) 
     {
         return res.status(401).json({
+            status : 401,
             data : {
               msg : invalidUserMsg
             }
     })
     };
     token =generateToken({ id: user.id })
-    console.log(user)
     return{user,token}  
    
       

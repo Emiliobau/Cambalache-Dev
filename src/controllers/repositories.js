@@ -6,6 +6,7 @@ const create = async (req, res, next) => {
     try {
        const newRepository = await repositoriesService.create(repository); 
         res.status(200).json({
+            status: 200,
             msg: `Repository created succesfully`,
             data: newRepository,
         })        
@@ -18,6 +19,7 @@ const getAll = async (req, res, next) =>{
     try{
       const listRepository = await repositoriesService.getAll();
       return res.status(200).json({
+         status: 200,
          listRepository : listRepository        })
       }  catch (error){
          next(error);
@@ -30,9 +32,13 @@ const getByUserId = async (req, res, next) => {
     try{
         const response = await repositoriesService.getByUserId(userId)
         if (response.length > 0 ) {
-            res.status(200).json(response)      
+            res.status(200).json({
+              status : 200,
+              data : response
+            })      
         }
-            res.status(401).json({
+            res.status(404).json({
+                status : 404,
                 data : {  msg : `repositories user id ${userId}} not found` }
         })             
     }
@@ -44,12 +50,14 @@ const update = async (req, res, next) => {
     const repositoryId = req.params.id
     const repository = await repositoriesService.getById(repositoryId)
     if(!repository){
-        res.status(401).json({
+        res.status(404).json({
+            status: 404,
             data : {  msg : `repositories id ${repositoryId} not found` }
     })}
     try {
       const response = await repositoriesService.update(repositoryId, req.body);
       res.status(200).json({
+        status: 200,
         msg: `Repository ${repositoryId} is updated successfully`,
         data: response,
       });
@@ -62,14 +70,15 @@ const update = async (req, res, next) => {
     const repositoryId = req.params.id
     const repository = await repositoriesService.getById(repositoryId)
     if(!repository){
-        res.status(401).json({
+        res.status(404).json({
+            status: 404,
             data : {  msg : `repositories id ${repositoryId} not found` }
     })}
     try {
       await repositoriesService.remove(repositoryId);
-      res
-        .status(200)
-        .json({ msg: `Repository ${repositoryId} removed succesfully` });
+      res.status(200).json({
+          status: 200,
+          msg: `Repository ${repositoryId} removed succesfully` });
     } catch (error) {
       next(error);
     }
