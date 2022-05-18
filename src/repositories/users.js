@@ -3,7 +3,6 @@ const Models = require("../database/models")
 
 
 const create = async (user) => {
-  console.log(user)
   return await Models.User.create(user);
 };
 

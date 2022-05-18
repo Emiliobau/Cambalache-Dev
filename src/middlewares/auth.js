@@ -3,12 +3,16 @@ const {validateToken} = require('../modules/auth')
 
 const invalidTokenMsg = 'Unauthorized, expired or invalid token';
 
-const isAuth = async (req, res, next) => {
-    console.log(req.headers)
-    const token = req.headers['authorization'];
-    console.log(token)
+const isAuth = async (req, res, next) => {  
+    let token = req.headers['authorization'];
+
+    if(token){
+        if(token.startsWith("Bearer ")){
+            token =token.split(" ")[1]
+        }
+    }
+    
     const verifyToken = validateToken(token);
-    console.log(verifyToken)
 
     if (!verifyToken){
         res.status(401).json({
@@ -31,18 +35,27 @@ const isAuth = async (req, res, next) => {
 
 const isOwnUser = async (req, res, next) => {
     const idUser = req.params.id
-    const token = req.headers['authorization']
-    const verifyToken = validateToken(token)
-
+    let  token = req.headers['authorization']
     if (!token){
         res.status(401).json({
             status : 401,
             msg: invalidTokenMsg
             });
     }
-
+    if(token){
+        if(token.startsWith("Bearer ")){
+            token =token.split(" ")[1]
+        }
+    }
+    const verifyToken = validateToken(token)
     const userTokenId = verifyToken.id
-    if (userTokenId == idUser) {
+    if (userTokenId != idUser) {
+        res.status(401).json({
+            status : 401,
+            msg: invalidTokenMsg
+            });
+    }
+    else {
         return next()
     }
 }

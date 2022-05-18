@@ -52,7 +52,9 @@ const getAll = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
+  
   const userId = req.params.id
+  console.log(userId)
   const user = await usersService.getById(userId)
   if(!user){
       res.status(404).json({
